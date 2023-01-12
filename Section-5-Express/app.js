@@ -14,7 +14,7 @@ app.use(shopRoutes);
 
 // Error Page for if nothing is catched
 app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, 'views', 'error.html'));
+  res.status(404).sendFile(path.join(__dirname, 'views', 'error.html'));
 });
 
 app.listen(3000);
