@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+app.set('view engine', 'pug');
+// Default path for view is the folder views, redudant
+app.set('views', 'views');
+
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
@@ -15,7 +19,7 @@ app.use(shopRoutes);
 
 // Error Page for if nothing is catched
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+  res.status(404).render('404');
 });
 
 app.listen(3000);
