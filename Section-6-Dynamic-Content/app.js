@@ -1,11 +1,19 @@
 const path = require('path');
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
+const exphbs = require('express-handlebars');
 
 const app = express();
 
-app.set('view engine', 'pug');
-// Default path for view is the folder views, redudant
+var hbs = exphbs.create({
+  // layoutsDir: 'views/layouts',
+  // defaultLayout: 'main-layout',
+  // extname: 'hbs',
+});
+
+// Register `hbs.engine` with the Express app.
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 app.set('views', 'views');
 
 const adminData = require('./routes/admin');
