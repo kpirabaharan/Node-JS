@@ -1,1 +1,23 @@
-[{"id": "2345", "title":"Book","price":"9.99","description":"Test\r\nDescription","imageUrl":"https://thumbs.dreamstime.com/b/stack-books-isolated-white-background-34637153.jpg"}]
+[
+  {
+    "title": "Book 1",
+    "imageUrl": "https://thumbs.dreamstime.com/b/stack-books-isolated-white-background-34637153.jpg",
+    "description": "Book 1\r\nTest",
+    "price": "19.99",
+    "id": "0.6232934769918073"
+  },
+  {
+    "title": "Book 2",
+    "imageUrl": "https://thumbs.dreamstime.com/b/stack-books-isolated-white-background-34637153.jpg",
+    "description": "Book 2\r\nTest",
+    "price": "29.99",
+    "id": "0.8832798463249203"
+  },
+  {
+    "title": "",
+    "imageUrl": "",
+    "description": "",
+    "price": "",
+    "id": "0.015771240933270647"
+  }
+]

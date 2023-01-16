@@ -1,1 +1,7 @@
-{"products":[{"id":"2345","quantity":1}],"totalPrice":19.98}
+{
+  "products": [
+    { "id": "0.8832798463249203", "quantity": 2 },
+    { "id": "0.6232934769918073", "quantity": 1 }
+  ],
+  "totalPrice": 79.97
+}
