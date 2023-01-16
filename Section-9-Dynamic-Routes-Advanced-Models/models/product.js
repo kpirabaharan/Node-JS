@@ -13,6 +13,7 @@ module.exports = class Product {
   }
 
   save() {
+    this.id = Math.random().toString();
     fs.readFile(p, (err, fileContent) => {
       let products = [];
       if (!err) {
