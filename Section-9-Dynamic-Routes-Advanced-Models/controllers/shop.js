@@ -14,10 +14,13 @@ exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   console.log(
     Product.findById(prodId, (product) => {
-      console.log(product);
+      res.render('shop/product-detail', {
+        product: product,
+        path: '/products',
+        pageTitle: product.title,
+      });
     }),
   );
-  res.redirect('/');
 };
 
 exports.getIndex = (req, res, next) => {
