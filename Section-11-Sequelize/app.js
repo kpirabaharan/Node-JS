@@ -7,6 +7,8 @@ const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
 const sequelize = require('./util/database');
+const Product = require('./models/product');
+const User = require('./models/user');
 
 const app = express();
 
@@ -22,8 +24,12 @@ app.use(shopRoutes);
 // Error Page for if nothing is catched
 app.use(errorController.error);
 
+// Can do either of below, only require one, but both don't hurt
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
 sequelize
-  .sync()
+  .sync({ force: true })
   .then((res) => {
     app.listen(3000);
   })
