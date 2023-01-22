@@ -98,17 +98,28 @@ exports.postCart = (req, res, next) => {
       });
     })
     .then((_) => {
-      res.redirect('/cart');
+      res.redirect('/products');
     })
     .catch((err) => console.log(err));
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId, (product) => {
-    Cart.deleteProduct(prodId, product.price);
-  });
-  res.redirect('/cart');
+
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart.getProducts({ where: { id: prodId } });
+    })
+    .then((products) => {
+      let product;
+      if (products.length > 0) {
+        product = products[0];
+      }
+      return product.cartItem.destroy();
+    })
+    .then((result) => res.redirect('/cart'))
+    .catch((err) => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
