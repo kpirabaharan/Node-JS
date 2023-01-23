@@ -31,7 +31,7 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   // Both of below works
-  Product.findByPk(prodId)
+  Product.fetchSingleProduct(prodId)
     .then((product) => {
       res.render('shop/product-detail', {
         pageTitle: product.title,
@@ -40,15 +40,6 @@ exports.getProduct = (req, res, next) => {
       });
     })
     .catch((err) => console.log(err));
-  // Product.findAll({ where: { id: prodId } })
-  //   .then((product) => {
-  //     res.render('shop/product-detail', {
-  //       pageTitle: product.title,
-  //       path: '/products',
-  //       product: product[0],
-  //     });
-  //   })
-  //   .catch((err) => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
