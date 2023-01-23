@@ -12,9 +12,18 @@ class User {
     return db.collection('users').insertOne(this);
   }
 
-  static findById(userId) {
+  static async findById(userId) {
     const db = getDb();
-    return db.collection('users').findOne({ _id: mongoDb.ObjectId(userId) });
+
+    try {
+      const user = await db
+        .collection('users')
+        .findOne({ _id: mongoDb.ObjectId(userId) });
+      console.log(user);
+      return user;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

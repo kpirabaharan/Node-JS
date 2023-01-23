@@ -14,7 +14,14 @@ exports.postAddProduct = async (req, res, next) => {
   const description = req.body.description;
   const imageUrl = req.body.imageUrl;
 
-  const product = new Product(title, price, description, imageUrl, null);
+  const product = new Product(
+    title,
+    price,
+    description,
+    imageUrl,
+    null,
+    req.user._id,
+  );
 
   try {
     await product.save();
@@ -62,6 +69,7 @@ exports.postEditProduct = async (req, res, next) => {
     updatedDescription,
     updatedImageUrl,
     prodId,
+    req.user._id,
   );
 
   try {
