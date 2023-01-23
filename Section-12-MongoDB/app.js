@@ -2,11 +2,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
 
-// const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
-const mongoConnect = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
@@ -20,20 +20,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   User.findByPk(1)
 //     .then((user) => {
 //       req.user = user;
-//       next();
+      // next();
 //     })
 //     .catch((err) => {
 //       console.log(err);
 //     });
 // });
 
-// app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
 // Error Page for if nothing is catched
 app.use(errorController.error);
 
-mongoConnect((client) => {
-  console.log(client);
+mongoConnect(() => {
   app.listen(3000);
 });
