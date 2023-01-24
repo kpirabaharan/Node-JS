@@ -8,7 +8,7 @@ class Product {
     this.description = description;
     this.imageUrl = imageUrl;
     this._id = _id ? new mongoDb.ObjectId(_id) : null;
-    this.userId = userId
+    this.userId = userId;
   }
 
   save() {
@@ -46,7 +46,7 @@ class Product {
       });
   }
 
-  static fetchSingleProduct(id) {
+  static findById(id) {
     const db = getDb();
     return db
       .collection('products')

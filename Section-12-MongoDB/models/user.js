@@ -20,7 +20,15 @@ class User {
     //   return cp._id === product.id;
     // });
     product.quantity = 1;
-    const updatedCart = { item: [product] };
+    delete product.userId;
+    const updatedCart = {
+      items: [
+        {
+          productId: new mongoDb.ObjectId(product._id),
+          quantity: product.quantity,
+        },
+      ],
+    };
     return db
       .collection('users')
       .updateOne(

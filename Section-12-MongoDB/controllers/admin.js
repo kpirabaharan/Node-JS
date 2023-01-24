@@ -40,7 +40,7 @@ exports.getEditProduct = async (req, res, next) => {
   const prodId = req.params.productId;
 
   try {
-    const product = await Product.fetchSingleProduct(prodId);
+    const product = await Product.findById(prodId);
     if (!product) {
       res.redirect('/');
     }
