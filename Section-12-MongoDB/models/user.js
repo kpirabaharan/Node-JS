@@ -103,7 +103,13 @@ class User {
       });
   }
 
-  getOrders() {}
+  getOrders() {
+    const db = getDb();
+    return db
+      .collection('orders')
+      .find({ 'user._id': new mongoDb.ObjectId(this._id) })
+      .toArray();
+  }
 
   static async findById(userId) {
     const db = getDb();
