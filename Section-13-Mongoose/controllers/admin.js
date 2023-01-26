@@ -1,5 +1,18 @@
 const Product = require('../models/product');
 
+exports.getProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
+    res.render('admin/products', {
+      pageTitle: 'Admin Products',
+      path: '/admin/products',
+      prods: products,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
@@ -57,22 +70,18 @@ exports.getEditProduct = async (req, res, next) => {
 
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
-  const updatedTitle = req.body.title;
-  const updatedPrice = req.body.price;
-  const updatedImageUrl = req.body.imageUrl;
-  const updatedDescription = req.body.description;
-
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDescription,
-    updatedImageUrl,
-    prodId,
-    req.user._id,
-  );
+  const title = req.body.title;
+  const price = req.body.price;
+  const imageUrl = req.body.imageUrl;
+  const description = req.body.description;
 
   try {
-    await product.save();
+    await Product.findByIdAndUpdate(prodId, {
+      title,
+      price,
+      description,
+      imageUrl,
+    });
   } catch (err) {
     console.log(err);
   } finally {
@@ -88,18 +97,5 @@ exports.postDeleteProduct = async (req, res, next) => {
     console.log(err);
   } finally {
     res.redirect('/admin/products');
-  }
-};
-
-exports.getProducts = async (req, res, next) => {
-  try {
-    const products = await Product.fetchAll();
-    res.render('admin/products', {
-      pageTitle: 'Admin Products',
-      path: '/admin/products',
-      prods: products,
-    });
-  } catch (err) {
-    console.log(err);
   }
 };
