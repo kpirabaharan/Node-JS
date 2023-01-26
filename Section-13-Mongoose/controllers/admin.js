@@ -92,7 +92,7 @@ exports.postEditProduct = async (req, res, next) => {
 exports.postDeleteProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   try {
-    await Product.deleteProduct(prodId);
+    await Product.findByIdAndRemove(prodId);
   } catch (err) {
     console.log(err);
   } finally {
