@@ -7,7 +7,7 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  title: {
+  price: {
     type: Number,
     required: true,
   },
@@ -20,6 +20,8 @@ const productSchema = new Schema({
     required: true,
   },
 });
+
+module.exports = mongoose.model('Product', productSchema);
 
 // const mongoDb = require('mongodb');
 // const getDb = require('../util/database').getDb;
@@ -95,5 +97,3 @@ const productSchema = new Schema({
 //       });
 //   }
 // }
-
-// module.exports = Product;
