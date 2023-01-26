@@ -1,76 +1,99 @@
-const mongoDb = require('mongodb');
-const getDb = require('../util/database').getDb;
+const mongoose = require('mongoose');
 
-class Product {
-  constructor(title, price, description, imageUrl, _id, userId) {
-    this.title = title;
-    this.price = price;
-    this.description = description;
-    this.imageUrl = imageUrl;
-    this._id = _id ? new mongoDb.ObjectId(_id) : null;
-    this.userId = userId;
-  }
+const Schema = mongoose.Schema;
 
-  save() {
-    const db = getDb();
-    let dbOp;
-    if (this._id) {
-      // Update Product
-      dbOp = db
-        .collection('products')
-        .updateOne({ _id: this._id }, { $set: this });
-    } else {
-      dbOp = db.collection('products').insertOne(this);
-    }
-    return dbOp
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+const productSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: Number,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+});
 
-  static fetchAll() {
-    const db = getDb();
-    return db
-      .collection('products')
-      .find()
-      .toArray()
-      .then((products) => {
-        // console.log(products);
-        return products;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+// const mongoDb = require('mongodb');
+// const getDb = require('../util/database').getDb;
 
-  static findById(id) {
-    const db = getDb();
-    return db
-      .collection('products')
-      .findOne({ _id: new mongoDb.ObjectId(id) })
-      .then((product) => {
-        console.log(product);
-        return product;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+// class Product {
+//   constructor(title, price, description, imageUrl, _id, userId) {
+//     this.title = title;
+//     this.price = price;
+//     this.description = description;
+//     this.imageUrl = imageUrl;
+//     this._id = _id ? new mongoDb.ObjectId(_id) : null;
+//     this.userId = userId;
+//   }
 
-  static deleteProduct(id) {
-    const db = getDb();
-    db.collection('products')
-      .deleteOne({ _id: new mongoDb.ObjectId(id) })
-      .then((product) => {
-        console.log('Deleted Product');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-}
+//   save() {
+//     const db = getDb();
+//     let dbOp;
+//     if (this._id) {
+//       // Update Product
+//       dbOp = db
+//         .collection('products')
+//         .updateOne({ _id: this._id }, { $set: this });
+//     } else {
+//       dbOp = db.collection('products').insertOne(this);
+//     }
+//     return dbOp
+//       .then((result) => {
+//         console.log(result);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }
 
-module.exports = Product;
+//   static fetchAll() {
+//     const db = getDb();
+//     return db
+//       .collection('products')
+//       .find()
+//       .toArray()
+//       .then((products) => {
+//         // console.log(products);
+//         return products;
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }
+
+//   static findById(id) {
+//     const db = getDb();
+//     return db
+//       .collection('products')
+//       .findOne({ _id: new mongoDb.ObjectId(id) })
+//       .then((product) => {
+//         console.log(product);
+//         return product;
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }
+
+//   static deleteProduct(id) {
+//     const db = getDb();
+//     db.collection('products')
+//       .deleteOne({ _id: new mongoDb.ObjectId(id) })
+//       .then((product) => {
+//         console.log('Deleted Product');
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }
+// }
+
+// module.exports = Product;
