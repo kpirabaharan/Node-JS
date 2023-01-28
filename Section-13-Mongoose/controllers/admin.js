@@ -2,7 +2,8 @@ const Product = require('../models/product');
 
 exports.getProducts = async (req, res, next) => {
   try {
-    const products = await Product.find().select('price -_id').populate('userId');
+    // const products = await Product.find().select('price -_id').populate('userId');
+    const products = await Product.find();
     console.log(products);
     res.render('admin/products', {
       pageTitle: 'Admin Products',
