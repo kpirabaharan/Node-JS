@@ -40,32 +40,30 @@ exports.getProduct = async (req, res, next) => {
   }
 };
 
-exports.getCart = (req, res, next) => {
-  req.user
-    .getCart()
-    .then(products => {
-      res.render('shop/cart', {
-        path: '/cart',
-        pageTitle: 'Your Cart',
-        products: products,
-      });
-    })
-    .catch(err => console.log(err));
+exports.getCart = async (req, res, next) => {
+  try {
+    const user = await req.user.populate('cart.items.productId');
+    const products = user.cart.items;
+    res.render('shop/cart', {
+      path: '/cart',
+      pageTitle: 'Your Cart',
+      products: products,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-exports.postCart = (req, res, next) => {
+exports.postCart = async (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId).then(product => {
-    return req.user
-      .addToCart(product)
-      .then(result => {
-        console.log(result);
-        res.redirect('/cart');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
+  try {
+    const product = await Product.findById(prodId);
+    await req.user.addToCart(product);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    res.redirect('/cart');
+  }
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
