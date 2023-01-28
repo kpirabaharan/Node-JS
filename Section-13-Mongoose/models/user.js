@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Product = require('./product');
 
 const Schema = mongoose.Schema;
 
@@ -54,21 +53,10 @@ userSchema.methods.deleteFromCart = function (productId) {
   return this.save();
 };
 
-// userSchema.methods.getCart = function async () {
-//   const productIds = this.cart.items.map(i => {
-//     return i.productId;
-//   });
-//   const products = await Product.find({ _id: { $in: productIds } });
-
-//       return products.map(p => {
-//         return {
-//           ...p,
-//           quantity: this.cart.items.find(i => {
-//             return i.productId.toString() === p._id.toString();
-//           }).quantity,
-//         };
-//       });
-//     }
+userSchema.methods.clearCart = function () {
+  this.cart = { items: [] };
+  return this.save();
+};
 
 module.exports = mongoose.model('User', userSchema);
 
