@@ -2,9 +2,9 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 let _db;
 
-const mongoConnect = async (cb) => {
+const mongoConnect = async cb => {
   const uri =
-    'mongodb+srv://kpirabaharan:7tTH4fUSTDZ4fcz@node-nosql.b4w22at.mongodb.net/shop?retryWrites=true&w=majority';
+    'mongodb://localhost:27017/shop';
 
   const client = new MongoClient(uri);
 

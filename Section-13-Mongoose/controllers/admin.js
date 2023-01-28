@@ -27,11 +27,14 @@ exports.postAddProduct = async (req, res, next) => {
   const description = req.body.description;
   const imageUrl = req.body.imageUrl;
 
+  console.log(req.user);
+
   const product = new Product({
     title,
     price,
     description,
     imageUrl,
+    userId: req.user,
   });
 
   try {

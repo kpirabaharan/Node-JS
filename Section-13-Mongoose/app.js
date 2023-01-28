@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findById('63d356eec5ea0d7fbd989ce7')
+  User.findById('63d489878ad3d1fbece5da7f')
     .then(user => {
       req.user = user;
       next();
@@ -34,24 +34,23 @@ app.use(shopRoutes);
 // Error Page for if nothing is catched
 app.use(errorController.error);
 
-mongoose
-  .connect(
-    'mongodb+srv://kpirabaharan:7tTH4fUSTDZ4fcz@node-nosql.b4w22at.mongodb.net/shop?retryWrites=true&w=majority',
-  )
-  .then(async res => {
-    try {
-      const existingUser = await User.findOne();
-      if (!existingUser) {
-        const user = new User({
-          name: 'Keeshigan',
-          email: 'Keeshigan@test.com',
-          cart: { items: [] },
-        });
-        user.save();
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      app.listen(3000);
+mongoose.set('strictQuery', true);
+
+mongoose.connect('mongodb://localhost:27017/shop').then(async () => {
+  console.log('Connected');
+  try {
+    const existingUser = await User.findOne();
+    if (!existingUser) {
+      const user = new User({
+        name: 'Keeshigan',
+        email: 'Keeshigan@test.com',
+        cart: { items: [] },
+      });
+      user.save();
     }
-  });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    app.listen(3000);
+  }
+});
