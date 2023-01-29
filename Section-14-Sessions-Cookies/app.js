@@ -34,6 +34,19 @@ app.use(
   }),
 );
 
+app.use(async (req, res, next) => {
+  try {
+    if (!req.session.user) {
+      return next();
+    }
+    const user = await User.findById(req.session.user._id);
+    req.user = user;
+    return next();
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // Checks all routes from separate file, admin has leading route /admin
 app.use(authRoutes);
 app.use('/admin', adminRoutes);

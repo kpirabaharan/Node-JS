@@ -5,19 +5,19 @@ exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    isAuth: req.session.user,
+    isAuth: req.session.isLoggedIn,
   });
 };
 
 exports.postLogin = async (req, res, next) => {
   try {
-    const user = await User.findById('63d5e4e076c03048425e7604');
+    const user = await User.findById('63d6bb341a412e96269053fa');
     req.session.isLoggedIn = true;
     req.session.user = user;
+    await req.session.save();
+    res.redirect('/');
   } catch (err) {
     console.log(err);
-  } finally {
-    res.redirect('/');
   }
 };
 

@@ -83,11 +83,11 @@ form {
   color: #ffeb3b;
 }
 
-.end-button {
+/* .end-button {
   position: absolute;
   right: 50px;
   top: 15px;
-}
+} */
 
 .mobile-nav {
   width: 30rem;
@@ -127,12 +127,34 @@ form {
   padding: 0.5rem 2rem;
 }
 
+.mobile-nav__item button {
+  /* text-decoration: none; */
+  /* color: white; */
+  background-color: white;
+  border: none;
+
+  /* font-size: medium;
+  cursor: pointer; */
+  text-decoration: none;
+  color: black;
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+}
+
 .mobile-nav__item a:active,
 .mobile-nav__item a:hover,
 .mobile-nav__item a.active {
   background: #00695c;
   color: white;
   border-radius: 3px;
+}
+
+.mobile-nav__item button:active,
+.mobile-nav__item button:hover,
+.mobile-nav__item button.active {
+  background: #00695c;
+  color: white;
+  border-radius: 0px;
 }
 
 #side-menu-toggle {
