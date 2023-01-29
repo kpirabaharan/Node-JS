@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -12,6 +13,7 @@ const errorController = require('./controllers/error');
 const User = require('./models/user');
 
 const app = express();
+const MONGODB_URI = 'mongodb://localhost:27017/shop';
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -21,7 +23,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Session Init
 app.use(
-  session({ secret: 'my secret', resave: false, saveUninitialized: false }),
+  session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: MONGODB_URI,
+      collectionName: 'sessions',
+    }),
+  }),
 );
 
 // Set current user at beginning of request to selected user 'hard coded'
@@ -46,7 +56,7 @@ app.use(errorController.error);
 
 mongoose.set('strictQuery', true);
 
-mongoose.connect('mongodb://localhost:27017/shop').then(async () => {
+mongoose.connect(MONGODB_URI).then(async () => {
   console.log('Connected');
   try {
     const existingUser = await User.findOne();
