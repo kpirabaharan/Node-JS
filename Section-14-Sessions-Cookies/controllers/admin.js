@@ -8,7 +8,7 @@ exports.getProducts = async (req, res, next) => {
       pageTitle: 'Admin Products',
       path: '/admin/products',
       prods: products,
-      isAuth: req.isLoggedIn,
+      isAuth: req.session.user,
     });
   } catch (err) {
     console.log(err);
@@ -20,7 +20,7 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false,
-    isAuth: req.isLoggedIn,
+    isAuth: req.session.user,
   });
 };
 
@@ -35,7 +35,7 @@ exports.postAddProduct = async (req, res, next) => {
     price,
     description,
     imageUrl,
-    userId: req.user,
+    userId: req.session.user,
   });
 
   try {
@@ -65,7 +65,7 @@ exports.getEditProduct = async (req, res, next) => {
       path: '/admin/edit-product',
       editing: editMode,
       product: product,
-      isAuth: req.isLoggedIn,
+      isAuth: req.session.user,
     });
   } catch (err) {
     console.log(err);

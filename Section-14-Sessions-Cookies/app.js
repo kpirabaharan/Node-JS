@@ -34,22 +34,10 @@ app.use(
   }),
 );
 
-// Set current user at beginning of request to selected user 'hard coded'
-app.use((req, res, next) => {
-  User.findById('63d489878ad3d1fbece5da7f')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
-
 // Checks all routes from separate file, admin has leading route /admin
+app.use(authRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-app.use(authRoutes);
 
 // Error Page for if nothing is catched, at end so it checks all other routes first
 app.use(errorController.error);

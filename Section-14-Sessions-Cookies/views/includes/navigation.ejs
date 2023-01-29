@@ -21,10 +21,18 @@
       </li>
       <% if (isAuth) { %>
       <li class="main-header__item">
-        <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product </a>
+        <a
+          class="<%= path === '/admin/add-product' ? 'active' : '' %>"
+          href="/admin/add-product"
+          >Add Product
+        </a>
       </li>
       <li class="main-header__item">
-        <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products </a>
+        <a
+          class="<%= path === '/admin/products' ? 'active' : '' %>"
+          href="/admin/products"
+          >Admin Products
+        </a>
       </li>
       <% } %>
     </ul>
@@ -33,6 +41,11 @@
         <a class="<%= path === '/login' ? 'active' : '' %>" href="/login"
           >Login</a
         >
+      </li>
+      <li class="main-header__item">
+        <form action="/logout" method="POST">
+          <button type="submit">Logout</button>
+        </form>
       </li>
     </ul>
   </nav>
@@ -74,6 +87,11 @@
       <a class="<%= path === '/login' ? 'active' : '' %>" href="/login"
         >Login</a
       >
+    </li>
+    <li class="main-header__item">
+      <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+      </form>
     </li>
   </ul>
 </nav>
