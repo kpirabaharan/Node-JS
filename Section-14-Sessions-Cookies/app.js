@@ -2,6 +2,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -18,6 +19,12 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Session Init
+app.use(
+  session({ secret: 'my secret', resave: false, saveUninitialized: false }),
+);
+
+// Set current user at beginning of request to selected user 'hard coded'
 app.use((req, res, next) => {
   User.findById('63d489878ad3d1fbece5da7f')
     .then(user => {
@@ -29,11 +36,12 @@ app.use((req, res, next) => {
     });
 });
 
+// Checks all routes from separate file, admin has leading route /admin
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-// Error Page for if nothing is catched
+// Error Page for if nothing is catched, at end so it checks all other routes first
 app.use(errorController.error);
 
 mongoose.set('strictQuery', true);
