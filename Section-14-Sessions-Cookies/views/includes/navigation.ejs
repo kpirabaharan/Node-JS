@@ -11,6 +11,7 @@
           >Products</a
         >
       </li>
+      <% if (isAuth) { %>
       <li class="main-header__item">
         <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
       </li>
@@ -19,7 +20,6 @@
           >Orders</a
         >
       </li>
-      <% if (isAuth) { %>
       <li class="main-header__item">
         <a
           class="<%= path === '/admin/add-product' ? 'active' : '' %>"
@@ -34,19 +34,22 @@
           >Admin Products
         </a>
       </li>
-      <% } %>
     </ul>
+    <% } %>
     <ul class="main-header__item-list">
-      <li class="main-header__item">
+      <% if (!isAuth) { %>
+      <li class="main-header__item end-button">
         <a class="<%= path === '/login' ? 'active' : '' %>" href="/login"
           >Login</a
         >
       </li>
-      <li class="main-header__item">
+      <% } else {%>
+      <li class="main-header__item end-button">
         <form action="/logout" method="POST">
           <button type="submit">Logout</button>
         </form>
       </li>
+      <% } %>
     </ul>
   </nav>
 </header>

@@ -72,15 +72,21 @@ form {
   color: white;
   background-color: #00695c;
   border: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: medium;
   cursor: pointer;
 }
- 
+
 .main-header__item button:hover,
 .main-header__item button:active,
 .main-header__item button.active {
   color: #ffeb3b;
+}
+
+.end-button {
+  position: absolute;
+  right: 50px;
+  top: 15px;
 }
 
 .mobile-nav {
