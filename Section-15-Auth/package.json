@@ -10,6 +10,7 @@
   "author": "Keeshigan Pirabaharan",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "connect-mongo": "^4.6.0",
     "ejs": "^3.1.8",

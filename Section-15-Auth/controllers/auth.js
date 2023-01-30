@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -39,9 +41,10 @@ exports.postSignup = async (req, res, next) => {
     if (existingUser) {
       return res.redirect('/signup');
     }
+    const hashPass = await bcrypt.hash(password, 12);
     const user = new User({
       email: email,
-      password: password,
+      password: hashPass,
       cart: { items: [] },
     });
     await user.save();
