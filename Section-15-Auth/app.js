@@ -58,20 +58,10 @@ app.use(errorController.error);
 mongoose.set('strictQuery', true);
 
 mongoose.connect(MONGODB_URI).then(async () => {
-  console.log('Connected');
   try {
-    const existingUser = await User.findOne();
-    if (!existingUser) {
-      const user = new User({
-        name: 'Keeshigan',
-        email: 'Keeshigan@test.com',
-        cart: { items: [] },
-      });
-      user.save();
-    }
+    console.log('Mongo Connected');
+    app.listen(3000);
   } catch (err) {
     console.log(err);
-  } finally {
-    app.listen(3000);
   }
 });

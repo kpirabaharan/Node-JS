@@ -29,7 +29,27 @@ exports.getSignup = (req, res, next) => {
   });
 };
 
-exports.postSignup = (req, res, next) => {};
+exports.postSignup = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+
+  try {
+    const existingUser = await User.findOne({ email: email });
+    if (existingUser) {
+      return res.redirect('/signup');
+    }
+    const user = new User({
+      email: email,
+      password: password,
+      cart: { items: [] },
+    });
+    await user.save();
+    return res.redirect('/login');
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
