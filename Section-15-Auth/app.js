@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -22,7 +23,6 @@ app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 // Session Init
 app.use(
   session({
@@ -35,8 +35,8 @@ app.use(
     }),
   }),
 );
-
 app.use(csrfProtection);
+app.use(flash());
 
 app.use(async (req, res, next) => {
   try {
@@ -52,7 +52,7 @@ app.use(async (req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.isAuth = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
   next();
 });
