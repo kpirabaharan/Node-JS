@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const e = require('express');
 
 const User = require('../models/user');
 
@@ -12,14 +13,27 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
   try {
-    const user = await User.findById('63d6bb341a412e96269053fa');
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    await req.session.save();
-    res.redirect('/');
+    const user = await User.findOne({ email: email });
+    // User does not exist
+    if (!user) {
+      return res.redirect('/login');
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
+      console.log('Authenticated');
+      req.session.isLoggedIn = true;
+      req.session.user = user;
+      await req.session.save();
+      return res.redirect('/');
+    }
+    return res.redirect('/login');
   } catch (err) {
     console.log(err);
+    return res.redirect('/login');
   }
 };
 
@@ -38,6 +52,7 @@ exports.postSignup = async (req, res, next) => {
 
   try {
     const existingUser = await User.findOne({ email: email });
+    // User already exists
     if (existingUser) {
       return res.redirect('/signup');
     }
