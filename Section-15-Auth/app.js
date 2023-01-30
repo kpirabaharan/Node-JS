@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const csrf = require('csurf');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -14,6 +15,7 @@ const User = require('./models/user');
 
 const app = express();
 const MONGODB_URI = 'mongodb://localhost:27017/shop';
+const csrfProtection = csrf();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -34,6 +36,8 @@ app.use(
   }),
 );
 
+app.use(csrfProtection);
+
 app.use(async (req, res, next) => {
   try {
     if (!req.session.user) {
@@ -45,6 +49,12 @@ app.use(async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
 });
 
 // Checks all routes from separate file, admin has leading route /admin

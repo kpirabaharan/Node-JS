@@ -12,6 +12,7 @@
             <h1><%=prodData.productId.title%></h1>
             <h2>Quantity: <%=prodData.quantity%></h2>
             <form action="/cart-delete-item" method="POST">
+              <%- include('../includes/csrf.ejs') %>
               <input type="hidden" name="productId" value="<%=prodData.productId._id%>">
               <button type="submit" class="btn danger">Delete</button>
             </form>
@@ -21,6 +22,7 @@
       <hr>
       <div class="centered">
         <form action="/create-order" method="POST">
+          <%- include('../includes/csrf.ejs') %>
           <button type="submit" class="btn">Order Now!</button>
         </form>
       </div>
