@@ -1,19 +1,23 @@
 const crypto = require('crypto');
 
+// const sgMail = require('@sendgrid/mail');
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-// const { MailtrapClient} = require('mailtrap');
+let aws = require('@aws-sdk/client-ses');
+let { defaultProvider } = require('@aws-sdk/credential-provider-node');
 
 const User = require('../models/user');
 
+const ses = new aws.SES({
+  apiVersion: '2010-12-01',
+  region: 'us-east-1',
+  defaultProvider,
+});
+
 // Email
-const transporter = nodemailer.createTransport({
-  host: 'smtp.mailtrap.io',
-  port: 2525,
-  auth: {
-    user: '649c090631f9dd',
-    pass: '43c4c55d75d7a8',
-  },
+let transporter = nodemailer.createTransport({
+  SES: { ses, aws },
 });
 
 exports.getLogin = (req, res, next) => {
@@ -93,14 +97,14 @@ exports.postSignup = async (req, res, next) => {
     await user.save();
     const mailOptions = {
       to: email,
-      from: 'shop@nodeapp.com',
+      from: 'kpirabaharan3@gmail.com',
       subject: 'Signup succeeded!',
       text: 'Hey there, it’s our first message sent with Nodemailer 😉 ',
       html: '<h1>You successfully signed up!</h1>',
     };
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
-        return console.log(error);
+        return console.log(err);
       }
       console.log('Message sent: %s', info.messageId);
     });
@@ -125,9 +129,73 @@ exports.getReset = (req, res, next) => {
     message = null;
   }
   res.render('auth/reset', {
-    path: '/reser',
+    path: '/reset',
     pageTitle: 'Reset Password',
     isAuth: false,
     errorMessage: message,
   });
+};
+
+exports.postReset = (req, res, next) => {
+  const emailAddr = req.body.email;
+  crypto.randomBytes(32, async (err, buffer) => {
+    if (err) {
+      console.log(err);
+      return res.redirect('/reset');
+    }
+    const token = buffer.toString('hex');
+    try {
+      const user = await User.findOne({ email: emailAddr });
+      if (!user) {
+        req.flash('error', 'No account with that email found.');
+        return res.redirect('/reset');
+      }
+      user.resetToken = token;
+      user.resetTokenExpiration = Date.now() + 3600000;
+      await user.save();
+      const mailOptions = {
+        to: emailAddr,
+        from: 'kpirabaharan3@gmail.com',
+        subject: 'Password Reset',
+        text: 'You requested a password reset.',
+        html: `<h1>You requested a password reset.</h1>
+              <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password.</p>`,
+      };
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          return console.log(err);
+        }
+        console.log('Message sent: %s', info.messageId);
+      });
+      return res.redirect('/login');
+    } catch (err) {
+      console.log(err);
+    }
+  });
+};
+
+exports.getNewPassword = async (req, res, next) => {
+  const token = req.params.token;
+
+  try {
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() },
+    });
+    let message = req.flash('error');
+    if (message.length > 0) {
+      message = message[0];
+    } else {
+      message = null;
+    }
+    res.render('auth/new-password', {
+      path: '/new-password',
+      pageTitle: 'New Password',
+      isAuth: false,
+      errorMessage: message,
+      userId: user._id.toString(),
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };

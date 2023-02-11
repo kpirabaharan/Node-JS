@@ -11,6 +11,8 @@
   "author": "Keeshigan Pirabaharan",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.267.0",
+    "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "connect-flash": "^0.1.1",

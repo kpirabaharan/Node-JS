@@ -18,8 +18,6 @@ const app = express();
 const MONGODB_URI = 'mongodb://localhost:27017/shop';
 const csrfProtection = csrf();
 
-
-
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
